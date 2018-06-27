@@ -148,44 +148,6 @@ if [[ -n $(lspci | grep -i "Multimedia audio controller:") ]] || [[ -n $(lspci |
 	EXTRAPKG="$EXTRAPKG alsa-utils"
 fi
 
-# for vm
-
-VM=$(systemd-detect-virt)
-
-# Check for a VMware virtual machine
-if [ "$VM" == "vmware" ]; then
-    # open-vm-tools		= open-vm-tools are the open source implementation of VMware Tools		= https://www.archlinux.org/packages/community/x86_64/open-vm-tools/
-	EXTRAPKG="$EXTRAPKG open-vm-tools"
-	DAEMONS="$DAEMONS vmtoolsd.service"
-
-	# Required Kernel Drivers
-	# vmw_balloon
-	# vmw_pvscsi
-	# vmw_vmci
-	# vmwgfx
-	# vmxnet3
-
-    # Esxi Hypervisor drivers
-	# vsock
-	# vmw_vsock_vmci_transport
-
-# Check for a Virtuabox virtual machine
-elif [ "$VM" == "oracle" ]; then
-    # virtualbox-guest-utils	= VirtualBox Guest userspace utilities		= https://www.archlinux.org/packages/community/x86_64/virtualbox-guest-utils/
-	EXTRAPKG="$EXTRAPKG virtualbox-guest-utils"
-	OPTIONALDEP="$OPTIONALDEP virtualbox-guest-modules-arch"
-	DAEMONS="$DAEMONS vboxservice.service"
-
-# Check if system is using an intel CPU and if so, install intel-ucode
-elif [ "$VM" == "qemu" ] || [ "$VM" == "kvm" ]; then
-	# qemu-guest-agent		= QEMU Guest Agent		= https://www.archlinux.org/packages/extra/x86_64/qemu-guest-agent/
-	EXTRAPKG="$EXTRAPKG qemu-guest-agent"
-	DAEMONS="$DAEMONS qemu-ga.service"
-
-elif [ "$VM" == "none" ] && [[ -n $(cat /proc/cpuinfo | grep -i "GenuineIntel") ]]; then
-	EXTRAPKG="$EXTRAPKG intel-ucode"
-	# intel-ucode				= Microcode update files for Intel CPUs			= https://www.archlinux.org/packages/extra/any/intel-ucode/
-fi
 
 
 selectDisk
