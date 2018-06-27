@@ -9,7 +9,7 @@ hwclock --systohc
 echo "Optimizing Pacman Database"
 pacman-key --populate archlinux
 pacman-key --init
-pacman-optimize
+#pacman-optimize
 
 # Update mlocate database if installed
 if [ -f "/usr/bin/updatedb" ]; then
