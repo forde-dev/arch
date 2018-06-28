@@ -18,7 +18,7 @@ DAEMONS=""
 EXTRAPKG="base base-devel refind-efi"
 OPTIONALDEP="bash-completion"
 
-# Setup
+# Setup Functions
 
 handelCanceled()
 {
@@ -143,12 +143,15 @@ confirmation()
 }
 
 # Check if system has a Audio device
+
 if [[ -n $(lspci | grep -i "Multimedia audio controller:") ]] || [[ -n $(lspci | grep -i "Audio device:") ]]; then
 	# alsa-utils		= An implementation of Linux sound support		= https://www.archlinux.org/packages/extra/x86_64/alsa-utils/
 	EXTRAPKG="$EXTRAPKG alsa-utils"
 fi
 
+# User Setup #
 
+# call the setup functions
 
 selectDisk
 requestPackages
@@ -158,12 +161,18 @@ requestUser
 confirmation
 clear
 
+# load uk keyboard settings
+
 echo "Loading Uk Keyboard Layout"
 loadkeys ${KEYMAP}
+
+# sync clock
 
 echo "Syncing clocks"
 timedatectl set-ntp true
 hwclock --systohc --utc
+
+# set location to ireland
 
 echo "Setting Locale to en_IE"
 sed -i 's/^en_US.UTF-8/#en_US.UTF-8/' /etc/locale.gen
@@ -173,10 +182,7 @@ export LANG=en_IE.UTF-8
 locale-gen
 echo ""
 
-
-##################
-## Partitioning ##
-##################
+# Partitioning #
 
 # Formating Disks
 echo "# Wriping Drive"
@@ -203,9 +209,7 @@ echo "Enable Swap Partition"
 mkswap ${DEVICE}2
 swapon ${DEVICE}2
 
-######################
-## Install Packages ##
-######################
+# Install Packages #
 
 # Install Required Packages if needed
 echo "Downloading and Install reflector installation requirements"
@@ -223,10 +227,7 @@ pacstrap ${VARTARGETDIR} --asdeps ${OPTIONALDEP}
 echo "# Creating Fstab Entrys"
 genfstab -U ${VARTARGETDIR} >> ${VARTARGETDIR}/etc/fstab
 
-
-################
-## Bootloader ##
-################
+# Bootloader #
 
 # Create required directories
 mkdir -pv ${VARTARGETDIR}/boot/efi/EFI/refind/drivers_x64 ${VARTARGETDIR}/boot/efi/EFI/BOOT/drivers_x64
@@ -265,10 +266,7 @@ EOF
 # Register rEFInd bootloader
 efibootmgr --create --disk ${DEVICE} --part 1 --loader /EFI/refind/refind_x64.efi --label "rEFInd Boot Manager" --verbose
 
-
-########################
-## Core Configuration ##
-########################
+# Core Configuration #
 
 echo "Configuring Network"
 DAEMONS="$DAEMONS systemd-networkd.service systemd-resolved.service"
@@ -302,10 +300,7 @@ ln -sf "/usr/share/zoneinfo/Europe/Dublin" ${VARTARGETDIR}/etc/localtime
 echo "Setting up Systemd Services"
 arch-chroot ${VARTARGETDIR} systemctl enable ${DAEMONS}
 
-
-################
-## Finalizing ##
-################
+# Finalizing #
 
 # Execute the post configurations within chroot
 cp post.sh ${VARTARGETDIR}/root/
@@ -319,12 +314,12 @@ umount -v ${VARTARGETDIR}/boot/efi
 umount -v ${VARTARGETDIR}
 
 echo ""
-echo "##########################################"
-echo "##               All Done               ##"
-echo "##########################################"
-echo "## Don't forget to execute after reboot ##"
-echo "## >>> timedatectl set-ntp true         ##"
-echo "##########################################"
-echo "## Please see '/opt/install-scripts'    ##"
-echo "## for extra post install scripts       ##"
-echo "##########################################"
+echo "#._______________________________________."
+echo "#|               All Done                |"
+echo "#|_______________________________________|"
+echo "#| Don't forget to execute after reboot  |"
+echo "#| >>> timedatectl set-ntp true          |"
+echo "#|_______________________________________|"
+echo "#| Please see '/opt/install-scripts'     |"
+echo "#| for extra post install scripts        |"
+echo "#.---------------------------------------."
