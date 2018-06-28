@@ -313,13 +313,11 @@ swapoff ${DEVICE}2
 umount -v ${VARTARGETDIR}/boot/efi
 umount -v ${VARTARGETDIR}
 
+# Finsihing Note #
+
 echo ""
-echo "#._______________________________________."
-echo "#|               All Done                |"
-echo "#|_______________________________________|"
-echo "#| Don't forget to execute after reboot  |"
-echo "#| >>> timedatectl set-ntp true          |"
-echo "#|_______________________________________|"
-echo "#| Please see '/opt/install-scripts'     |"
-echo "#| for extra post install scripts        |"
-echo "#.---------------------------------------."
+echo "Finised Core Install"
+echo "=> After reboot login as your user"
+echo "=> then type the command 'timedatectl set-ntp true'"
+echo "=> You can then find more optional scripts to run in /opt/install-scripts"
+echo "=> In /opt/install-scripts you will also find a script to install and activate Gnome called 'gnome_install.sh'"
