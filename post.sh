@@ -9,6 +9,8 @@ hwclock --systohc
 echo "Optimizing Pacman Database"
 pacman-key --populate archlinux
 pacman-key --init
+
+## this doesnt work 26/06/2018
 #pacman-optimize
 
 # Update mlocate database if installed
@@ -35,10 +37,7 @@ fi
 mkdir -p /root/.config/
 mkdir -p /etc/skel/.config/
 
-
-###################
-## User Accounts ##
-###################
+# User Accounts #
 
 ROOTPASSWORD=$1
 USERNAME=$2
@@ -55,10 +54,7 @@ echo -e "${USERPASS}\n${USERPASS}" | passwd ${USERNAME}
 echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/10_wheel
 chmod 640 /etc/sudoers.d/10_wheel
 
-
-##################
-## Pacman Hooks ##
-##################
+# Pacman Hooks #
 
 # Create any missing directories
 mkdir -p /etc/pacman.d/hooks
@@ -105,10 +101,7 @@ Exec = /bin/sh -c "reflector --country 'Ireland' --country 'United Kingdom' --la
 EOF
 fi
 
-
-################
-## Aur Helper ##
-################
+# Aur Helper #
 
 # Change sudoers to allow nobody user access to sudo without password
 echo 'nobody ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/99_nobody
