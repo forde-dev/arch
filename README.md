@@ -9,15 +9,11 @@ HOW TO USE:
 
 *First download the tar.gz file*
 
-    $ git clone https://gitlab.com/fordetek/arch-haswell.git
-
-*or*
-
-    $ curl -SLO https://gitlab.com/fordetek/arch-haswell/-/archive/master/arch-haswell-master.tar.gz
+    $ curl -SLO https://github.com/fordetek/arch/archive/master.tar.gz
 
 *Next extract it*
 
-    $ tar zxf arch-haswell-master.tar.gz && cd arch-haswell-master
+    $ tar zxf arch-master.tar.gz && cd arch-master
 
 *Finally run the base script*
 
