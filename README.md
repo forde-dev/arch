@@ -13,7 +13,7 @@ HOW TO USE:
 
 *Next extract it*
 
-    $ tar zxf arch-master.tar.gz && cd arch-master
+    $ tar zxf master.tar.gz && cd arch-master
 
 *Finally run the base script*
 
