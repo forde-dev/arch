@@ -2,59 +2,28 @@
 set -e
 set -u
 
-# Locale Settings
-locale-gen
-hwclock --systohc
-
-echo "Optimizing Pacman Database"
-pacman-key --populate archlinux
-pacman-key --init
-
-## this doesnt work 26/06/2018
-#pacman-optimize
-
-# Update mlocate database if installed
-if [ -f "/usr/bin/updatedb" ]; then
-    echo "Updating mlocate database"
-	updatedb
-fi
-
-# Update pkgfile database if installed
-if [ -f "/usr/bin/pkgfile" ]; then
-    echo "Updating pkgfile database"
-	pkgfile --update
-fi
-
-# Changeing Pacman Configuration to add colored output
-sed -i 's/#Color/Color/' /etc/pacman.conf
-
-# Create 'arch-release' if runing under vmware
-if [ $(systemd-detect-virt) == "vmware" ]; then
-    cat /proc/version > /etc/arch-release
-fi
-
-# Create important directorys
-mkdir -p /root/.config/
-mkdir -p /etc/skel/.config/
-
-# User Accounts #
-
 ROOTPASSWORD=$1
 USERNAME=$2
-USERPASS=$3
+USERPASSWORD=$3
 
-echo "Changing Root password"
+echo "updating"
+locale-gen
+hwclock --systohc
+pacman-key --populate archlinux
+pacman-key --init
+updatedb
+pkgfile --update
+
+echo "adding colour"
+sed -i 's/#Color/Color/' /etc/pacman.conf
+
+# setting up the user
+echo "creating Root password"
 echo -e "${ROOTPASSWORD}\n${ROOTPASSWORD}" | passwd root
-
-# Create user acount
 useradd -m -G wheel,users -s /bin/bash ${USERNAME}
 echo -e "${USERPASS}\n${USERPASS}" | passwd ${USERNAME}
-
-# Change sudoers to allow wheel group access to sudo with password
 echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/10_wheel
 chmod 640 /etc/sudoers.d/10_wheel
-
-# Pacman Hooks #
 
 # Create any missing directories
 mkdir -p /etc/pacman.d/hooks
