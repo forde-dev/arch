@@ -24,3 +24,9 @@ scripts when trouble shooting im sure you can get it working too.
     $ sh base.sh
 
 *now just follow instuctions provided by the install and you are all set*
+
+
+# Credits
+
+I Took insperation for these scriptes form https://github.com/willforde and 
+https://wiki.archlinux.org/index.php/installation_guide 
