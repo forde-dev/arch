@@ -21,7 +21,7 @@ sed -i 's/#Color/Color/' /etc/pacman.conf
 echo "creating Root password"
 echo -e "${ROOTPASSWORD}\n${ROOTPASSWORD}" | passwd root
 useradd -m -G wheel,users -s /bin/bash ${USERNAME}
-echo -e "${USERPASS}\n${USERPASS}" | passwd ${USERNAME}
+echo -e "${USERPASSWORD}\n${USERPASSWORD}" | passwd ${USERNAME}
 echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/10_wheel
 chmod 640 /etc/sudoers.d/10_wheel
 
