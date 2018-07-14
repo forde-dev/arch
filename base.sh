@@ -113,7 +113,7 @@ KEYMAP="uk"
 
 PKG="base base-devel refind-efi wireless_tools nfs-utils ntfs-3g openssh pkgfile pacman-contrib mlocate mlocate alsa-utils"
 
-ASDEP="bash-completion rsync pkgfile-update.timer sshd.socket updatedb.timer"
+ASDEP="bash-completion rsync" 			# pkgfile-update.timer sshd.socket updatedb.timer"
 
 # clocks
 echo "Setting local time"
