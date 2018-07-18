@@ -111,9 +111,7 @@ DEVICE="/dev/sda"
 
 KEYMAP="uk"
 
-PKG="base base-devel refind-efi wireless_tools nfs-utils ntfs-3g openssh pkgfile pacman-contrib mlocate mlocate alsa-utils"
-
-ASDEP="bash-completion rsync" 			# pkgfile-update.timer sshd.socket updatedb.timer"
+PKG="base base-devel refind-efi wireless_tools nfs-utils ntfs-3g openssh pkgfile pacman-contrib mlocate mlocate alsa-utils bash-completion rsync"
 
 # clocks
 echo "Setting local time"
@@ -146,14 +144,14 @@ sgdisk -n 2:0:+2G -t 2:8200 -c 2:"Swap Partition" ${DEVICE}
 echo "Setup Root"
 sgdisk -n 3:0:0 -t 3:8300 -c 3:"Linux / Partition" ${DEVICE}
 
-mkfs.ext4 -F ${DEVICE}3
+mkfs.ext4 ${DEVICE}3
 
 echo "# Mounting Partitions"
-mount -vo noatime ${DEVICE}3 /mnt
+mount ${DEVICE}3 /mnt
 
-mkdir -pv /mnt/boot/efi
+mkdir /mnt/boot/efi
 
-mount -v ${DEVICE}1 /mnt/boot/efi
+mount ${DEVICE}1 /mnt/boot/efi
 
 echo "Enable Swap Partition"
 mkswap ${DEVICE}2
@@ -172,8 +170,6 @@ pacman -Syy
 
 echo "# Installing Main System"
 pacstrap /mnt ${PKG}
-
-pacstrap /mnt --asdeps ${ASDEP}
 
 echo "# Creating Fstab Entrys"
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -273,8 +269,8 @@ rm /mnt/root/post.sh
 
 echo "Unmounting Drive Partitions"
 swapoff ${DEVICE}2
-umount -v /mnt/boot/efi
-umount -v /mnt
+umount /mnt/boot/efi
+umount /mnt
 
 # Finsihing Note #
 
