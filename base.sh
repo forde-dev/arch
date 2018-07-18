@@ -149,7 +149,7 @@ mkfs.ext4 ${DEVICE}3
 echo "# Mounting Partitions"
 mount ${DEVICE}3 /mnt
 
-mkdir /mnt/boot/efi
+mkdir -pv /mnt/boot/efi
 
 mount ${DEVICE}1 /mnt/boot/efi
 
